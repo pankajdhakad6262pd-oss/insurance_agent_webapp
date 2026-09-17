@@ -41,12 +41,12 @@ NEXT_PUBLIC_APP_NAME="InsureShield Agent CRM"
 MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/insurance_platform?retryWrites=true&w=majority
 
 # JWT Authentication
-JWT_SECRET=super_secret_jwt_key_insurance_agent_platform_2026
+JWT_SECRET=super_secret_jwt_key_insurance_agent
 JWT_EXPIRES_IN=7d
 
-# Free Gmail SMTP (Sends real emails to ANY customer with 0 domain required)
+# Free Gmail SMTP (Sends real policy emails to ANY customer with 0 domain required)
 SMTP_USER=your_email@gmail.com
-SMTP_PASS=your_16_digit_gmail_app_password
+SMTP_PASS=your_16_letter_gmail_app_password_without_spaces   # e.g., abcdxyzpqrstuvwx (no spaces)
 
 # Resend Email (Alternative provider)
 RESEND_API_KEY=your_resend_api_key_here
@@ -64,10 +64,10 @@ PORT=5000
 NODE_ENV=development
 CLIENT_URL=http://localhost:3000
 MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/insurance_platform?retryWrites=true&w=majority
-JWT_SECRET=super_secret_jwt_key_insurance_agent_platform_2026
+JWT_SECRET=super_secret_jwt_key_insurance_agent
 JWT_EXPIRES_IN=7d
 SMTP_USER=your_email@gmail.com
-SMTP_PASS=your_16_digit_gmail_app_password
+SMTP_PASS=your_16_letter_gmail_app_password_without_spaces   # e.g., abcdxyzpqrstuvwx (no spaces)
 RESEND_API_KEY=your_resend_api_key_here
 EMAIL_FROM=onboarding@resend.dev
 STRIPE_SECRET_KEY=sk_test_placeholder
@@ -140,8 +140,8 @@ docker-compose up --build
 5. Under **Environment Variables**, add:
    - `MONGODB_URI` = your MongoDB Atlas connection string
    - `JWT_SECRET` = your secure JWT secret string
-   - `RESEND_API_KEY` = your Resend API key (optional)
-   - `EMAIL_FROM` = your sender email (e.g. `onboarding@resend.dev`)
+   - `SMTP_USER` = your Gmail address (e.g. `your_email@gmail.com`)
+   - `SMTP_PASS` = your 16-character Google App Password without spaces (e.g. `abcdxyzpqrstuvwx`)
    - `NEXT_PUBLIC_API_URL` = `/api`
 6. Click **Deploy**. Vercel will build all static pages and serverless API functions automatically.
 
@@ -155,3 +155,26 @@ Run backend unit tests for the Underwriting Eligibility Rules Engine:
 cd backend
 npm test
 ```
+
+---
+
+## 7. Policy Activation Email Delivery & Troubleshooting
+
+Upon successful payment completion, the platform automatically dispatches an official **Policy Activation Confirmation Email** to whatever email address was entered for that customer (`customer.email`).
+
+### What to Do If You Don't See the Email in Your Primary Inbox:
+
+> [!IMPORTANT]
+> **Check Your Spam / Junk Folder**:
+> If the confirmation email is not visible in your regular inbox or "All Mail", **please check your Spam / Junk or Promotions folder**.
+>
+> - **Why this happens initially**: When receiving automated emails from a new script or when testing by sending from and to the same Gmail address, email spam filters (like Gmail AI) may temporarily place the first message in the Spam folder.
+> - **How to fix it permanently**: Simply open the email inside your Spam folder and click **"Report not spam"** (or move it to your **Primary Inbox**). This immediately trains Google's filter to recognize the sender, and all subsequent policy documents and receipts will land straight into the Primary inbox.
+
+### How to Configure Gmail SMTP:
+1. Go to your **Google Account** $\rightarrow$ **Security** $\rightarrow$ Enable **2-Step Verification**.
+2. Search for **"App Passwords"** in your Google Account search bar.
+3. Create a new app password (e.g. name it `InsureShield`).
+4. Copy the generated 16-character code and remove any spaces (e.g., `abcdxyzpqrstuvwx`).
+5. Set `SMTP_USER=your_email@gmail.com` and `SMTP_PASS=your_16_letters_without_spaces` in your `.env` or Vercel Environment Variables.
+
