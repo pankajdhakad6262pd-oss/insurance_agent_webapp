@@ -23,6 +23,7 @@ import {
   Sparkles,
   Search,
   SlidersHorizontal,
+  Download,
 } from 'lucide-react';
 import { api } from '../../../../lib/api';
 import { Card, CardHeader, CardTitle, CardContent } from '../../../../components/ui/card';
@@ -31,7 +32,7 @@ import { Badge } from '../../../../components/ui/badge';
 import { Skeleton } from '../../../../components/ui/skeleton';
 import { Dialog } from '../../../../components/ui/dialog';
 import { Pagination } from '../../../../components/ui/pagination';
-import { formatCurrency, sanitizeUrl } from '../../../../lib/utils';
+import { formatCurrency, formatDate, sanitizeUrl } from '../../../../lib/utils';
 import { toast } from 'sonner';
 
 export default function CustomerDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -40,6 +41,7 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ id: s
   const router = useRouter();
 
   const [customer, setCustomer] = useState<any>(null);
+  const [purchasedPolicies, setPurchasedPolicies] = useState<any[]>([]);
   const [eligibleProducts, setEligibleProducts] = useState<any[]>([]);
   const [ineligibleProducts, setIneligibleProducts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -70,8 +72,9 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ id: s
       const res = await api.getEligibleProducts(customerId);
       if (res.success && res.data) {
         setCustomer(res.data.customer);
-        setEligibleProducts(res.data.eligibleProducts);
-        setIneligibleProducts(res.data.ineligibleProducts);
+        setPurchasedPolicies(res.data.purchasedPolicies || []);
+        setEligibleProducts(res.data.eligibleProducts || []);
+        setIneligibleProducts(res.data.ineligibleProducts || []);
       }
     } catch (err: any) {
       toast.error(err.message || 'Failed to evaluate customer eligibility');
@@ -253,19 +256,142 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ id: s
         </div>
       </div>
 
+      {/* Active / Purchased Policies Section */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2.5">
+            <div className="h-9 w-9 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shadow-xs">
+              <ShieldCheck className="h-5 w-5" />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-slate-900">Active / Purchased Policies</h2>
+              <p className="text-xs text-slate-500">
+                Plans successfully purchased and active for this client. These plans cannot be purchased twice.
+              </p>
+            </div>
+          </div>
+          <Badge variant={purchasedPolicies.length > 0 ? 'success' : 'default'} className="px-3 py-1">
+            {purchasedPolicies.length} Active {purchasedPolicies.length === 1 ? 'Policy' : 'Policies'}
+          </Badge>
+        </div>
+
+        {purchasedPolicies.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {purchasedPolicies.map((policy) => {
+              const prod = policy.productId || {};
+              const cat = prod.categoryId || {};
+              const catName = typeof cat === 'object' ? cat.name : 'Insurance Plan';
+              const quoteId = policy.quoteId?._id || policy.quoteId;
+
+              return (
+                <div
+                  key={policy._id}
+                  className="glass-card rounded-2xl p-5 border border-emerald-200/80 bg-gradient-to-br from-white via-white to-emerald-50/25 shadow-sm flex flex-col justify-between space-y-4"
+                >
+                  <div className="space-y-3">
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <span className="text-[10px] font-bold text-emerald-700 uppercase tracking-wider bg-emerald-100/80 px-2.5 py-0.5 rounded-md">
+                          {catName}
+                        </span>
+                        <h3 className="text-base font-extrabold text-slate-900 mt-2 leading-snug">
+                          {prod.name || 'Purchased Policy'}
+                        </h3>
+                      </div>
+                      <Badge variant="success" className="shrink-0 flex items-center space-x-1 text-[11px]">
+                        <CheckCircle2 className="h-3 w-3" />
+                        <span>Active</span>
+                      </Badge>
+                    </div>
+
+                    <div className="bg-slate-50/90 rounded-xl p-3.5 border border-slate-200/70 space-y-2 text-xs">
+                      <div className="flex justify-between items-center pb-1.5 border-b border-slate-200/60">
+                        <span className="text-slate-500 font-medium">Policy Number:</span>
+                        <span className="font-mono font-bold text-blue-700 text-xs">
+                          {policy.policyNumber}
+                        </span>
+                      </div>
+
+                      <div className="flex justify-between items-center">
+                        <span className="text-slate-500 font-medium">Sum Assured:</span>
+                        <span className="font-bold text-emerald-700">
+                          {formatCurrency(prod.coverageAmount || 0)}
+                        </span>
+                      </div>
+
+                      <div className="flex justify-between items-center">
+                        <span className="text-slate-500 font-medium">Annual Premium:</span>
+                        <span className="font-bold text-slate-900">
+                          {formatCurrency(prod.premium || 0)}/yr
+                        </span>
+                      </div>
+
+                      {policy.startDate && policy.endDate && (
+                        <div className="flex justify-between items-center pt-1.5 border-t border-slate-200/60 text-[11px]">
+                          <span className="text-slate-500 font-medium">Active Term:</span>
+                          <span className="font-semibold text-slate-700">
+                            {formatDate(policy.startDate)} – {formatDate(policy.endDate)}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="pt-1">
+                    {quoteId ? (
+                      <a
+                        href={`/api/quotes/${quoteId}/pdf`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full inline-block"
+                      >
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="w-full text-xs font-semibold space-x-1.5 border-emerald-300 text-emerald-800 hover:bg-emerald-50 shadow-xs"
+                        >
+                          <Download className="h-3.5 w-3.5" />
+                          <span>Download Policy Document (PDF)</span>
+                        </Button>
+                      </a>
+                    ) : (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        disabled
+                        className="w-full text-xs font-semibold space-x-1.5"
+                      >
+                        <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+                        <span>Policy Active</span>
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="glass-card rounded-2xl p-5 border border-dashed border-slate-200 bg-slate-50/50 text-center">
+            <p className="text-xs text-slate-500">
+              No active policies have been purchased for this client yet. Select from the eligible plans below to generate an official quote.
+            </p>
+          </div>
+        )}
+      </div>
+
       {/* Real-time Eligible Plans Section */}
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center space-x-2">
               <Sparkles className="h-5 w-5 text-blue-600" />
-              <h2 className="text-xl font-bold text-slate-900">Eligible Insurance Products</h2>
+              <h2 className="text-xl font-bold text-slate-900">New Eligible Insurance Products</h2>
             </div>
             <p className="text-xs text-slate-500 mt-0.5">
-              Evaluated in real-time according to regulatory age bands, vehicle status, and underwriting thresholds.
+              Available plans this customer is eligible to purchase (already-purchased plans are automatically excluded).
             </p>
           </div>
-          <Badge variant="success" className="px-3 py-1">
+          <Badge variant="info" className="px-3 py-1">
             {eligibleProducts.length} Match(es) Found
           </Badge>
         </div>

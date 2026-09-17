@@ -163,8 +163,8 @@ function PaymentSuccessContent() {
           </div>
 
           {/* Action Button: Download Policy Document */}
-          <div className="pt-2">
-            {quote?._id && (
+          <div className="pt-2 space-y-3">
+            {quote?._id ? (
               <a
                 href={`/api/quotes/${quote._id}/pdf`}
                 target="_blank"
@@ -176,7 +176,36 @@ function PaymentSuccessContent() {
                   <span>Download Policy Document (PDF)</span>
                 </Button>
               </a>
-            )}
+            ) : policy?.certificatePdfUrl ? (
+              <a
+                href={policy.certificatePdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full inline-block"
+              >
+                <Button className="w-full space-x-2 text-sm py-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-md shadow-blue-500/20">
+                  <Download className="h-4 w-4" />
+                  <span>Download Policy Document (PDF)</span>
+                </Button>
+              </a>
+            ) : null}
+
+            {/* Safe to Close Window Notice */}
+            <div className="p-4 rounded-2xl bg-emerald-50/80 border border-emerald-200/80 text-center space-y-2">
+              <p className="text-xs font-semibold text-emerald-900">
+                Payment completed successfully!
+              </p>
+              <p className="text-[11px] text-emerald-700 leading-relaxed">
+                Your transaction is confirmed and policy documents have been emailed to you. You can download your certificate above and <strong className="font-bold text-emerald-900">now safely close this window</strong>.
+              </p>
+              <button
+                type="button"
+                onClick={() => window.close()}
+                className="inline-flex items-center justify-center px-4 py-1.5 mt-1 text-xs font-medium text-emerald-800 hover:text-emerald-950 bg-emerald-100/80 hover:bg-emerald-200/80 rounded-xl transition border border-emerald-300/60"
+              >
+                Close Window
+              </button>
+            </div>
           </div>
         </div>
 

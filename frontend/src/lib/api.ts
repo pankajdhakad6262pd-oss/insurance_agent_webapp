@@ -65,8 +65,18 @@ export const api = {
     return request<{ success: boolean; data: any[] }>(`/products${query}`);
   },
   listCategories: () => request<{ success: boolean; data: any[] }>('/products/categories'),
-  getProduct: (id: string) => request<{ success: boolean; data: any }>(`/products/${id}`),
-  getEligibleProducts: (customerId: string) => request<{ success: boolean; data: { customer: any; eligibleProducts: any[]; ineligibleProducts: any[]; totalEligible: number } }>(`/products/eligible/${customerId}`),
+  getEligibleProducts: (customerId: string) =>
+    request<{
+      success: boolean;
+      data: {
+        customer: any;
+        purchasedPolicies?: any[];
+        eligibleProducts: any[];
+        ineligibleProducts: any[];
+        totalEligible: number;
+        totalPurchased?: number;
+      };
+    }>(`/products/eligible/${customerId}`),
 
   // Quotes
   listQuotes: (page = 1, limit = 50) => request<{ success: boolean; data: { items: any[]; pagination: any } }>(`/quotes?page=${page}&limit=${limit}`),

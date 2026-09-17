@@ -67,8 +67,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (isLoading) return;
 
     const isAuthRoute = pathname === '/login' || pathname === '/register';
+    const isPublicRoute =
+      pathname === '/' ||
+      pathname === '/payment-success' ||
+      pathname?.startsWith('/payment-success') ||
+      isAuthRoute;
 
-    if (!token && !isAuthRoute && pathname !== '/') {
+    if (!token && !isPublicRoute) {
       router.push('/login');
     } else if (token && isAuthRoute) {
       router.push('/dashboard');

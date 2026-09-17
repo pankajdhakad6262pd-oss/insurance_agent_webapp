@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '../../../../../lib/server/db';
-import { Customer, InsuranceProduct } from '../../../../../lib/server/models';
+import { Customer, InsuranceProduct, PolicyActivation, Payment, Quote } from '../../../../../lib/server/models';
 import { verifyAuth } from '../../../../../lib/server/auth';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ customerId: string }> }) {
   try {
@@ -14,12 +16,63 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ cust
     const customer = await Customer.findById(customerId).lean();
     if (!customer) return NextResponse.json({ success: false, message: 'Customer not found' }, { status: 404 });
 
+    // 1. Fetch all purchased and active policies for this customer
+    const purchasedPolicies = await PolicyActivation.find({
+      customerId,
+      status: 'active',
+    })
+      .populate({
+        path: 'productId',
+        populate: { path: 'categoryId', select: 'name slug icon' },
+      })
+      .populate({
+        path: 'quoteId',
+        populate: { path: 'productId' },
+      })
+      .populate('paymentId')
+      .sort({ createdAt: -1 })
+      .lean();
+
+    // Map out already purchased product IDs
+    const purchasedProductIds = new Set<string>();
+    for (const policy of purchasedPolicies) {
+      if (policy.productId) {
+        purchasedProductIds.add(String((policy.productId as any)._id || policy.productId));
+      }
+      if (policy.quoteId && (policy.quoteId as any).productId) {
+        purchasedProductIds.add(String((policy.quoteId as any).productId._id || (policy.quoteId as any).productId));
+      }
+    }
+
+    // Also check completed payments for this customer
+    const completedPayments = await Payment.find({
+      customerId,
+      paymentStatus: 'completed',
+    })
+      .populate('quoteId')
+      .lean();
+
+    for (const payment of completedPayments) {
+      const quote = payment.quoteId as any;
+      if (quote && quote.productId) {
+        purchasedProductIds.add(String(quote.productId._id || quote.productId));
+      }
+    }
+
+    // 2. Fetch all products to evaluate eligibility
     const products = await InsuranceProduct.find().populate('categoryId', 'name slug description icon').lean();
 
     const eligibleProducts: any[] = [];
     const ineligibleProducts: any[] = [];
 
     for (const product of products) {
+      const prodIdStr = String(product._id);
+
+      // If customer has already purchased this plan, exclude it from new eligible plans!
+      if (purchasedProductIds.has(prodIdStr)) {
+        continue;
+      }
+
       const catName = product.categoryId?.name?.toLowerCase() || '';
       const age = customer.age;
       const rules = product.eligibilityRules || {};
@@ -82,13 +135,14 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ cust
       success: true,
       data: {
         customer,
+        purchasedPolicies,
         eligibleProducts,
         ineligibleProducts,
         totalEligible: eligibleProducts.length,
+        totalPurchased: purchasedPolicies.length,
       },
     });
   } catch (err: any) {
     return NextResponse.json({ success: false, message: err.message }, { status: 500 });
   }
 }
-
