@@ -28,7 +28,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     const msg =
       `Hello ${name},\n\n` +
       `Here is your official insurance quotation for *${prodName}*.\n\n` +
-      `Annual Premium: *$${quote.premium.toLocaleString()} USD*\n\n` +
+      `Premium Amount: *$${quote.premium.toLocaleString()} USD*\n\n` +
       `You can view and download your PDF quotation here:\n` +
       `${pdfUrl}\n\n` +
       `Best regards,\nYour Insurance Advisor`;

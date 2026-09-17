@@ -320,7 +320,7 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ id: s
                       </div>
 
                       <div className="flex justify-between items-center">
-                        <span className="text-slate-500 font-medium">Annual Premium:</span>
+                        <span className="text-slate-500 font-medium">Premium:</span>
                         <span className="font-bold text-slate-900">
                           {formatCurrency(prod.premium || 0)}/yr
                         </span>
@@ -511,7 +511,7 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ id: s
                         <span className="font-medium text-slate-800">{product.termYears} Year(s)</span>
                       </div>
                       <div className="flex justify-between pt-1 border-t border-slate-200">
-                        <span className="font-semibold text-slate-700">Annual Premium:</span>
+                        <span className="font-semibold text-slate-700">Premium:</span>
                         <span className="font-extrabold text-blue-700 text-sm">{formatCurrency(product.premium)}/yr</span>
                       </div>
                     </div>

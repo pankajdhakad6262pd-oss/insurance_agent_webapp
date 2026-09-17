@@ -1,3 +1,4 @@
+import nodemailer from 'nodemailer';
 import { Resend } from 'resend';
 import { config } from '../config/env';
 import { ICustomer, IInsuranceProduct, IPolicyActivation } from '../types';
@@ -17,14 +18,33 @@ export class EmailService {
       this.resendClient = new Resend(config.resend.apiKey);
       console.log('[EmailService] Resend email client initialized.');
     } else {
-      console.log('[EmailService] Resend API key not configured. Mock email logger active.');
+      console.log('[EmailService] Resend API key not configured.');
     }
   }
 
   async sendPolicyActivationEmail(data: PolicyEmailData): Promise<void> {
     const { customer, product, policy, premiumAmount } = data;
-    const recipientEmail = customer.email;
-    const subject = 'Your Insurance Policy Is Active';
+    const subject = `Policy Confirmation: ${product.name} [#${policy.policyNumber}]`;
+    const textContent = `
+InsureShield Platform - Official Policy Confirmation
+
+Dear ${customer.firstName} ${customer.lastName},
+
+Congratulations! Your insurance policy is active and officially registered.
+
+Policy Details:
+- Policy Number: ${policy.policyNumber}
+- Plan Name: ${product.name}
+- Sum Assured: $${product.coverageAmount.toLocaleString()} USD
+- Premium Amount Paid: $${premiumAmount.toLocaleString()} USD
+- Effective Start Date: ${new Date(policy.startDate).toLocaleDateString('en-US', { dateStyle: 'medium' })}
+- Expiration Date: ${new Date(policy.endDate).toLocaleDateString('en-US', { dateStyle: 'medium' })}
+
+For priority claims or assistance, call 1-800-INSUR-SHIELD.
+
+Best regards,
+InsureShield Underwriting Team
+    `.trim();
 
     const htmlContent = `
       <!DOCTYPE html>
@@ -69,7 +89,7 @@ export class EmailService {
                 <td>$${product.coverageAmount.toLocaleString()} USD</td>
               </tr>
               <tr>
-                <td>Annual Premium Paid</td>
+                <td>Premium Amount Paid</td>
                 <td>$${premiumAmount.toLocaleString()} USD</td>
               </tr>
               <tr>
@@ -98,6 +118,37 @@ export class EmailService {
       </html>
     `;
 
+    const smtpUser = process.env.SMTP_USER || process.env.SMPT_USER || process.env.GMAIL_USER;
+    const smtpPass = process.env.SMTP_PASS || process.env.SMPT_PASS || process.env.GMAIL_APP_PASSWORD || process.env.GMAIL_PASS;
+
+    // Priority 1: Gmail SMTP (Sends to ANY customer email)
+    if (smtpUser && smtpPass) {
+      try {
+        const transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: smtpUser,
+            pass: smtpPass.replace(/\s+/g, ''),
+          },
+        });
+
+        await transporter.sendMail({
+          from: `"InsureShield Platform" <${smtpUser}>`,
+          replyTo: smtpUser,
+          to: customer.email,
+          subject,
+          text: textContent,
+          html: htmlContent,
+        });
+
+        console.log(`[EmailService] Gmail SMTP email dispatched to ${recipientEmail}`);
+        return;
+      } catch (err) {
+        console.error('[EmailService] Failed to send email via Gmail SMTP:', err);
+      }
+    }
+
+    // Priority 2: Resend API
     if (this.resendClient) {
       try {
         const result = await this.resendClient.emails.send({
@@ -107,21 +158,22 @@ export class EmailService {
           html: htmlContent,
         });
         console.log(`[EmailService] Resend email dispatched to ${recipientEmail}. ID:`, result.data?.id);
+        return;
       } catch (error) {
         console.error('[EmailService] Failed to send email via Resend:', error);
       }
-    } else {
-      console.log(`\n================== [MOCK RESEND EMAIL DISPATCH] ==================`);
-      console.log(`To: ${recipientEmail}`);
-      console.log(`Subject: ${subject}`);
-      console.log(`Policy Number: ${policy.policyNumber}`);
-      console.log(`Product: ${product.name}`);
-      console.log(`Premium: $${premiumAmount} USD`);
-      console.log(`Status: ACTIVE`);
-      console.log(`===================================================================\n`);
     }
+
+    // Fallback: Console Mock
+    console.log(`\n================== [MOCK EMAIL DISPATCH] ==================`);
+    console.log(`To: ${recipientEmail}`);
+    console.log(`Subject: ${subject}`);
+    console.log(`Policy Number: ${policy.policyNumber}`);
+    console.log(`Product: ${product.name}`);
+    console.log(`Premium: $${premiumAmount} USD`);
+    console.log(`Status: ACTIVE`);
+    console.log(`============================================================\n`);
   }
 }
 
 export const emailService = new EmailService();
-

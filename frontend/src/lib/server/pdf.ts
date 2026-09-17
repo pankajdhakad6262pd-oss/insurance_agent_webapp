@@ -40,8 +40,8 @@ export async function generatePdfBuffer(options: {
       doc.rect(40, 110, 515, 35).fill(lightGray);
       doc.fillColor(darkTextColor).fontSize(9).font('Helvetica-Bold')
         .text(`Quote Reference: #${options.quoteRef}`, 55, 122)
-        .text(`Issue Date: ${new Date().toLocaleDateString()}`, 240, 122)
-        .text('Valid For: 30 Days', 430, 122);
+        .text(`Issue Date: ${new Date().toLocaleDateString()}`, 235, 122)
+        .text(`Policy Term: ${options.termYears} Year${options.termYears > 1 ? 's' : ''}`, 410, 122);
 
       // Customer & Agent Section
       const startY = 160;
@@ -93,7 +93,7 @@ export async function generatePdfBuffer(options: {
       // Premium Summary
       const premY = 465;
       doc.rect(40, premY, 515, 25).fill(lightGray);
-      doc.fillColor(primaryColor).fontSize(11).font('Helvetica-Bold').text('ANNUAL PREMIUM SUMMARY', 50, premY + 7);
+      doc.fillColor(primaryColor).fontSize(11).font('Helvetica-Bold').text('PREMIUM BREAKDOWN & SUMMARY', 50, premY + 7);
 
       const boxY = premY + 25;
       const tax = Math.round(options.premium * 0.05);
@@ -107,7 +107,7 @@ export async function generatePdfBuffer(options: {
 
       doc.moveTo(50, boxY + 52).lineTo(545, boxY + 52).strokeColor(borderGray).stroke();
       doc.fontSize(12).fillColor(secondaryColor).font('Helvetica-Bold')
-        .text('TOTAL ANNUAL PAYABLE:', 60, boxY + 58)
+        .text('TOTAL AMOUNT PAYABLE:', 60, boxY + 58)
         .text(`$${total.toLocaleString()} USD`, 420, boxY + 58, { align: 'right', width: 110 });
 
       // Footer

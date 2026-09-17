@@ -198,7 +198,7 @@ export default function ProductsPage() {
                       <span className="font-medium text-slate-800">{p.termYears} Year(s)</span>
                     </div>
                     <div className="flex justify-between pt-1 border-t border-slate-200">
-                      <span className="font-semibold text-slate-700">Annual Premium:</span>
+                      <span className="font-semibold text-slate-700">Premium:</span>
                       <span className="font-extrabold text-blue-700 text-sm">{formatCurrency(p.premium)}/yr</span>
                     </div>
                   </div>

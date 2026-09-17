@@ -32,8 +32,9 @@ export async function connectToDatabase() {
       console.log('[Serverless DB] Connected to MongoDB Atlas');
       // Check if auto-seed needed
       try {
-        const { autoSeedIfEmpty } = await import('./seed');
+        const { autoSeedIfEmpty, syncRealisticProducts } = await import('./seed');
         await autoSeedIfEmpty();
+        await syncRealisticProducts();
       } catch (e) {
         console.error('[Serverless DB] Auto-seed check error:', e);
       }

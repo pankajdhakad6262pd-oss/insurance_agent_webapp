@@ -65,8 +65,8 @@ export class PdfService {
           .fontSize(9)
           .font('Helvetica-Bold')
           .text(`Quote Reference: #Q-${quoteId.slice(-8).toUpperCase()}`, 55, 122)
-          .text(`Issue Date: ${new Date().toLocaleDateString('en-US', { dateStyle: 'medium' })}`, 240, 122)
-          .text(`Valid For: 30 Days`, 430, 122);
+          .text(`Issue Date: ${new Date().toLocaleDateString('en-US', { dateStyle: 'medium' })}`, 235, 122)
+          .text(`Policy Term: ${product.termYears} Year${product.termYears > 1 ? 's' : ''}`, 410, 122);
 
         // 3. Customer & Agent Details 2-Column Section
         const startY = 160;
@@ -241,7 +241,7 @@ export class PdfService {
           .fillColor(darkTextColor)
           .fontSize(9)
           .font('Helvetica')
-          .text('Annual Base Risk Premium', 60, pBoxY + 12)
+          .text('Base Risk Premium', 60, pBoxY + 12)
           .text(`$${basePrem.toLocaleString()} USD`, 440, pBoxY + 12, { align: 'right', width: 95 });
 
         doc
@@ -258,7 +258,7 @@ export class PdfService {
           .fontSize(12)
           .fillColor(secondaryColor)
           .font('Helvetica-Bold')
-          .text('TOTAL ANNUAL PAYABLE PREMIUM', 60, pBoxY + 57)
+          .text('TOTAL AMOUNT PAYABLE', 60, pBoxY + 57)
           .text(`$${totalPayable.toLocaleString()} USD`, 440, pBoxY + 57, { align: 'right', width: 95 });
 
         // 6. Terms & Signature Block

@@ -20,6 +20,7 @@
   "author": "Insurance Agent Platform Team",
   "license": "MIT",
   "dependencies": {
+    "@types/nodemailer": "^8.0.2",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.5.1",
     "cors": "^2.8.5",
@@ -30,6 +31,7 @@
     "mongodb-memory-server": "^11.2.0",
     "mongoose": "^8.9.5",
     "morgan": "^1.10.0",
+    "nodemailer": "^10.0.10",
     "pdfkit": "^0.16.0",
     "resend": "^4.1.2",
     "stripe": "^17.5.0",

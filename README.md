@@ -20,8 +20,9 @@ Use the following credentials to access and evaluate the application:
 | Third-Party Service | Purpose | Mode / Configuration |
 | :--- | :--- | :--- |
 | **MongoDB Atlas** | Primary cloud database for agents, customers, products, quotes, payments, and policy records | **Live Cloud Cluster**: Direct connection via `MONGODB_URI` string (with automated embedded fallback for local offline testing). |
+| **Gmail SMTP (Nodemailer)** | Free transactional email delivery to any customer | **SMTP Mode**: Dispatches policy activation emails directly to any recipient using a Google App Password via `SMTP_USER` and `SMTP_PASS` (0 custom domain required). |
 | **Stripe** | Payment link generation & hosted checkout | **Hybrid Checkout & Test Mode**: Generates real Stripe hosted checkout sessions (`https://checkout.stripe.com/...`) using test API keys, and supports simulation mode for instant policy activation. |
-| **Resend** | Transactional email delivery for policy certificates | **API Mode**: Dispatches official HTML policy activation confirmation emails to customer inboxes via `RESEND_API_KEY` (with console fallback if unset). |
+| **Resend** | Alternative transactional email delivery | **API Mode**: Dispatches emails via `RESEND_API_KEY` (with console fallback if unset). |
 | **PDFKit** | Dynamic personalized quote document generation | **In-Memory Vector PDF Engine**: Generates official branded quotation documents and serves them directly without third-party dependencies. |
 | **WhatsApp URL Scheme** | Mobile quotation and checkout link delivery | **Direct Deep-Link Scheme**: Generates pre-formatted, URL-encoded WhatsApp messages (`https://wa.me/{phone}?text=...`) targeting customer phone numbers. |
 
@@ -43,7 +44,11 @@ MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/insurance_pl
 JWT_SECRET=super_secret_jwt_key_insurance_agent_platform_2026
 JWT_EXPIRES_IN=7d
 
-# Resend Email (Optional - console fallback active if unset)
+# Free Gmail SMTP (Sends real emails to ANY customer with 0 domain required)
+SMTP_USER=your_email@gmail.com
+SMTP_PASS=your_16_digit_gmail_app_password
+
+# Resend Email (Alternative provider)
 RESEND_API_KEY=your_resend_api_key_here
 EMAIL_FROM=onboarding@resend.dev
 
@@ -61,6 +66,8 @@ CLIENT_URL=http://localhost:3000
 MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/insurance_platform?retryWrites=true&w=majority
 JWT_SECRET=super_secret_jwt_key_insurance_agent_platform_2026
 JWT_EXPIRES_IN=7d
+SMTP_USER=your_email@gmail.com
+SMTP_PASS=your_16_digit_gmail_app_password
 RESEND_API_KEY=your_resend_api_key_here
 EMAIL_FROM=onboarding@resend.dev
 STRIPE_SECRET_KEY=sk_test_placeholder

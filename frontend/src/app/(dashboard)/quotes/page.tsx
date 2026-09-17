@@ -96,7 +96,7 @@ export default function QuotesPage() {
     const msg =
       `Hello ${name},\n\n` +
       `Here is your official insurance quotation for *${prodName}*.\n\n` +
-      `Annual Premium: *$${quote.premium.toLocaleString()} USD*\n\n` +
+      `Premium Amount: *$${quote.premium.toLocaleString()} USD*\n\n` +
       `You can view and download your full quotation breakdown PDF here:\n` +
       `${pdfUrl}\n\n` +
       `Please let me know if you would like to proceed with policy activation.\n\n` +

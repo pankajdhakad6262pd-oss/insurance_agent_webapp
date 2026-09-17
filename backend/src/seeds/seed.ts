@@ -87,190 +87,190 @@ export async function seedDatabase() {
       {
         categoryId: catMap.get('term-insurance'),
         name: 'PureShield Term 100',
-        description: 'High-sum assured term plan offering comprehensive pure life coverage with accidental death benefit.',
+        description: 'Comprehensive pure life protection with high sum assured and accidental death accelerated benefit.',
         minAge: 18,
         maxAge: 60,
-        premium: 550,
-        coverageAmount: 1000000,
+        premium: 180, // ~$180 USD/yr (approx ₹15,000 INR/yr)
+        coverageAmount: 150000, // $150,000 USD (approx ₹1.25 Crore)
         termYears: 30,
-        features: ['100% Tax Benefits', 'Accidental Death Rider Included', 'Terminal Illness Payout'],
+        features: ['100% Tax Benefits (80C / 10(10D))', 'Accidental Death Rider Included', 'Terminal Illness Accelerated Payout'],
         eligibilityRules: { minAge: 18, maxAge: 60, minIncome: 25000 },
       },
       {
         categoryId: catMap.get('term-insurance'),
         name: 'Elite Income Term Protector',
-        description: 'Designed for high net-worth professionals, providing monthly income payout to beneficiaries.',
+        description: 'Designed for established professionals providing guaranteed monthly income replacement for family stability.',
         minAge: 25,
         maxAge: 55,
-        premium: 890,
-        coverageAmount: 2000000,
+        premium: 260, // ~$260 USD/yr (approx ₹21,500 INR/yr)
+        coverageAmount: 250000, // $250,000 USD (approx ₹2.0 Crore)
         termYears: 25,
-        features: ['Staggered Monthly Payout', 'Waiver of Premium on Disability', 'Inflation Adjusted Benefit'],
-        eligibilityRules: { minAge: 25, maxAge: 55, minIncome: 60000 },
+        features: ['Staggered Monthly Income Payout', 'Waiver of Premium on Critical Illness', 'Inflation Adjusted Cover'],
+        eligibilityRules: { minAge: 25, maxAge: 55, minIncome: 50000 },
       },
       {
         categoryId: catMap.get('term-insurance'),
         name: 'Young Professional Term Saver',
-        description: 'Budget-friendly term plan for early career starters locking in low lifetime premiums.',
+        description: 'Budget-friendly term plan for early career starters locking in low guaranteed lifetime premiums.',
         minAge: 18,
         maxAge: 40,
-        premium: 320,
-        coverageAmount: 500000,
+        premium: 120, // ~$120 USD/yr (approx ₹10,000 INR/yr)
+        coverageAmount: 100000, // $100,000 USD (approx ₹80 Lakh)
         termYears: 20,
-        features: ['Guaranteed Level Premiums', 'No Medical Exam under 35', 'Convertible to Whole Life'],
+        features: ['Guaranteed Level Premiums', 'No Medical Examination Required Under 35', 'Option to Convert into Whole Life'],
         eligibilityRules: { minAge: 18, maxAge: 40, minIncome: 15000 },
       },
 
-      // Health Insurance (Category 2) - Age 18-70
+      // Health Insurance (Category 2) - Age 18-70, $180-$240 USD/yr matching ₹15k-20k INR benchmark
       {
         categoryId: catMap.get('health-insurance'),
         name: 'MediGuard Comprehensive Health',
-        description: 'Zero room-rent sublimit hospitalization plan with outpatient benefits and preventive checkups.',
+        description: 'Individual hospitalization cover with zero room rent cap, diagnostic coverage, and preventive health checkups.',
         minAge: 18,
         maxAge: 70,
-        premium: 720,
-        coverageAmount: 500000,
+        premium: 180, // Exact Indian benchmark: ₹15,000 INR/yr -> ~$180 USD/yr
+        coverageAmount: 30000, // $30,000 USD (approx ₹25 Lakh cover)
         termYears: 1,
-        features: ['Cashless Treatment in 10,000+ Hospitals', 'No Co-Payment', 'Free Annual Health Checkup'],
+        features: ['Cashless Treatment in 10,000+ Network Hospitals', 'Zero Co-Payment & No Room Rent Cap', 'Free Annual Preventative Health Checkup'],
         eligibilityRules: { minAge: 18, maxAge: 70, minIncome: 20000 },
       },
       {
         categoryId: catMap.get('health-insurance'),
-        name: 'Senior Vitality Health Care',
-        description: 'Specially crafted health policy for senior citizens covering pre-existing conditions and AYUSH care.',
-        minAge: 50,
-        maxAge: 70,
-        premium: 1450,
-        coverageAmount: 750000,
+        name: 'Family Floater Super Shield',
+        description: 'Single floater plan covering self, spouse, and dependent children with automatic restoration of sum assured.',
+        minAge: 21,
+        maxAge: 65,
+        premium: 240, // Exact Indian benchmark: ₹20,000 INR/yr -> ~$240 USD/yr
+        coverageAmount: 60000, // $60,000 USD (approx ₹50 Lakh cover)
         termYears: 1,
-        features: ['Pre-existing Disease Coverage after 1 yr', 'Home Healthcare Cover', 'Critical Illness Cover'],
-        eligibilityRules: { minAge: 50, maxAge: 70, minIncome: 15000 },
+        features: ['Unlimited 100% Sum Assured Restoration', 'Comprehensive Maternity & Newborn Cover', 'Bariatric & Robotic Surgery Coverage'],
+        eligibilityRules: { minAge: 21, maxAge: 65, minIncome: 30000 },
       },
       {
         categoryId: catMap.get('health-insurance'),
-        name: 'Family Floater Super Shield',
-        description: 'One single plan covering self, spouse, and children with unlimited automatic restoration.',
-        minAge: 21,
-        maxAge: 65,
-        premium: 980,
-        coverageAmount: 1000000,
+        name: 'Senior Vitality Health Care',
+        description: 'Specialized health coverage for parents and seniors with pre-existing disease cover and in-home attendant care.',
+        minAge: 50,
+        maxAge: 75,
+        premium: 290, // ~$290 USD/yr (approx ₹24,000 INR/yr)
+        coverageAmount: 40000, // $40,000 USD (approx ₹33 Lakh cover)
         termYears: 1,
-        features: ['Unlimited Sum Assured Restoration', 'Maternity Cover Included', 'Bariatric Surgery Cover'],
-        eligibilityRules: { minAge: 21, maxAge: 65, minIncome: 35000 },
+        features: ['Pre-existing Illness Coverage After 1 Year', 'AYUSH & In-Home Nursing Care Included', 'Critical Illness & Dialysis Support'],
+        eligibilityRules: { minAge: 50, maxAge: 75, minIncome: 15000 },
       },
 
       // Vehicle Insurance (Category 3) - Requires vehicleType
       {
         categoryId: catMap.get('vehicle-insurance'),
         name: 'AutoSecure Comprehensive Car Cover',
-        description: 'All-inclusive 360-degree protection for personal 4-wheelers with roadside assistance.',
+        description: 'All-inclusive 360-degree protection for personal four-wheelers with zero depreciation and roadside assistance.',
         minAge: 18,
         maxAge: 75,
-        premium: 450,
-        coverageAmount: 40000,
+        premium: 160, // ~$160 USD/yr (approx ₹13,200 INR/yr)
+        coverageAmount: 15000, // $15,000 IDV (approx ₹12.5 Lakh vehicle value)
         termYears: 1,
-        features: ['Zero Depreciation Included', 'Engine & Gearbox Protection', '24x7 Roadside Assistance'],
+        features: ['Zero Depreciation (Bumper to Bumper)', 'Engine & Gearbox Hydrostatic Lock Protection', '24x7 Pan-India Roadside Emergency Assistance'],
         eligibilityRules: { requiresVehicle: true, allowedVehicleTypes: ['car'] },
       },
       {
         categoryId: catMap.get('vehicle-insurance'),
         name: 'MotoRide Two-Wheeler Shield',
-        description: 'Instant bike policy with collision damage, third-party liability, and rider personal accident cover.',
+        description: 'Instant motorcycle and scooter policy with collision damage, third-party liability, and owner personal accident cover.',
         minAge: 18,
         maxAge: 70,
-        premium: 180,
-        coverageAmount: 10000,
+        premium: 35, // ~$35 USD/yr (approx ₹2,900 INR/yr)
+        coverageAmount: 2000, // $2,000 IDV (approx ₹1.65 Lakh bike value)
         termYears: 1,
-        features: ['Instant Digital Policy', 'Personal Accident Cover of $15,000', 'Loss of Helmet & Keys Cover'],
+        features: ['Instant Digital Policy Issuance', 'Personal Accident Cover of $15,000', 'Loss of Helmet, Key & Consumables Protection'],
         eligibilityRules: { requiresVehicle: true, allowedVehicleTypes: ['two-wheeler'] },
       },
       {
         categoryId: catMap.get('vehicle-insurance'),
         name: 'FleetGuard Commercial Vehicle Cover',
-        description: 'Engineered for commercial vans, pickups, and fleet trucks with cargo protection.',
+        description: 'Engineered for commercial vans, pickups, and fleet trucks with cargo protection and legal liability coverage.',
         minAge: 21,
         maxAge: 70,
-        premium: 1100,
-        coverageAmount: 100000,
+        premium: 280, // ~$280 USD/yr (approx ₹23,000 INR/yr)
+        coverageAmount: 30000, // $30,000 IDV (approx ₹25 Lakh commercial vehicle value)
         termYears: 1,
-        features: ['Driver & Cleaner Legal Cover', 'In-Transit Cargo Damage Protection', 'Zero-Downtime Towing'],
+        features: ['Driver & Cleaner Legal Liability Protection', 'Transit Cargo & Goods Damage Cover', 'Fleet Breakdown Towing & On-Site Assistance'],
         eligibilityRules: { requiresVehicle: true, allowedVehicleTypes: ['commercial'] },
       },
 
       // Travel Insurance (Category 4) - Age 18-80
       {
         categoryId: catMap.get('travel-insurance'),
-        name: 'Global Voyager International Cover',
-        description: 'Comprehensive worldwide travel insurance meeting all Schengen, US, and UK visa requirements.',
+        name: 'Domestic Explorer Travel Plan',
+        description: 'Affordable domestic journey protection covering flight delays, baggage losses, and unexpected medical expenses.',
         minAge: 18,
         maxAge: 80,
-        premium: 240,
-        coverageAmount: 250000,
+        premium: 30, // ~$30 USD/yr (approx ₹2,500 INR)
+        coverageAmount: 15000, // $15,000 USD cover
         termYears: 1,
-        features: ['Medical Evacuation up to $100k', 'Passport Loss Assistance', 'Flight Interruption Cover'],
+        features: ['Flight Delay & Missed Connection Compensation', 'Baggage Loss & Transit Theft Cover', 'Emergency Domestic Hospitalization'],
+        eligibilityRules: { minAge: 18, maxAge: 80 },
+      },
+      {
+        categoryId: catMap.get('travel-insurance'),
+        name: 'Global Voyager International Cover',
+        description: 'Worldwide travel coverage meeting 100% Schengen, USA, and UK visa requirements with emergency evacuation.',
+        minAge: 18,
+        maxAge: 80,
+        premium: 75, // ~$75 USD/yr (approx ₹6,200 INR)
+        coverageAmount: 50000, // $50,000 USD cover
+        termYears: 1,
+        features: ['Meets 100% Schengen, US & UK Visa Medical Reqs', 'Medical Evacuation & Repatriation Cover', 'Passport Loss Assistance & Trip Cancellation'],
         eligibilityRules: { minAge: 18, maxAge: 80 },
       },
       {
         categoryId: catMap.get('travel-insurance'),
         name: 'Student Abroad Travel Shield',
-        description: 'Tailored for university students studying overseas, covering tuition fee continuation and health.',
+        description: 'Tailored for university students studying overseas, covering tuition continuation, health, and family visits.',
         minAge: 18,
         maxAge: 35,
-        premium: 380,
-        coverageAmount: 300000,
+        premium: 120, // ~$120 USD/yr (approx ₹10,000 INR)
+        coverageAmount: 100000, // $100,000 USD cover
         termYears: 1,
-        features: ['Tuition Fee Interruption Refund', 'Compassionate Visit Cover', 'Worldwide Hospitalization'],
+        features: ['Tuition Fee Interruption Refund', 'Compassionate Visit Flight Cover for Family', 'Worldwide Inpatient & Outpatient Care'],
         eligibilityRules: { minAge: 18, maxAge: 35 },
-      },
-      {
-        categoryId: catMap.get('travel-insurance'),
-        name: 'Domestic Explorer Travel Plan',
-        description: 'Affordable domestic trip protection covering flight cancellations, luggage delays, and hotel issues.',
-        minAge: 18,
-        maxAge: 80,
-        premium: 85,
-        coverageAmount: 50000,
-        termYears: 1,
-        features: ['Baggage Delay Compensation', 'Flight Missed Connection Cover', 'Adventure Sports Add-on'],
-        eligibilityRules: { minAge: 18, maxAge: 80 },
       },
 
       // Life Insurance (Category 5) - Age 18-65
       {
         categoryId: catMap.get('life-insurance'),
         name: 'FutureGlow Guaranteed Life Return',
-        description: 'Endowment life plan that pairs full family protection with tax-free guaranteed annual bonuses.',
+        description: 'Endowment life plan combining family financial security with guaranteed annual payouts and maturity bonus.',
         minAge: 18,
         maxAge: 60,
-        premium: 1200,
-        coverageAmount: 750000,
+        premium: 360, // ~$360 USD/yr (approx ₹30,000 INR/yr)
+        coverageAmount: 50000, // $50,000 USD (approx ₹41 Lakh cover)
         termYears: 20,
-        features: ['Guaranteed Annual Payouts', 'Maturity Lump Sum Benefit', 'Critical Illness Cover'],
-        eligibilityRules: { minAge: 18, maxAge: 60, minIncome: 30000 },
-      },
-      {
-        categoryId: catMap.get('life-insurance'),
-        name: 'Heritage Whole Life Assurance',
-        description: 'Lifelong protection until age 100 with escalating cash value accumulation and loan facility.',
-        minAge: 25,
-        maxAge: 65,
-        premium: 1850,
-        coverageAmount: 1500000,
-        termYears: 40,
-        features: ['Coverage up to Age 100', 'Cash Value Surrender Privilege', 'Estate Planning Support'],
-        eligibilityRules: { minAge: 25, maxAge: 65, minIncome: 50000 },
+        features: ['Guaranteed Annual Cash Payouts', 'Tax-Free Maturity Lump Sum Benefit', 'Critical Illness & Disability Rider'],
+        eligibilityRules: { minAge: 18, maxAge: 60, minIncome: 25000 },
       },
       {
         categoryId: catMap.get('life-insurance'),
         name: 'Child Career Life Builder',
-        description: 'Dual benefit policy financing higher education milestones while securing child future.',
+        description: 'Dual-benefit policy funding higher education milestones while securing child future even in parent absence.',
         minAge: 21,
         maxAge: 50,
-        premium: 950,
-        coverageAmount: 600000,
+        premium: 280, // ~$280 USD/yr (approx ₹23,000 INR/yr)
+        coverageAmount: 40000, // $40,000 USD (approx ₹33 Lakh cover)
         termYears: 18,
-        features: ['College Milestone Cash Drops', 'Premium Waiver on Parent Demise', 'Guaranteed Bonus Rates'],
+        features: ['Higher Education College Milestone Payouts', 'Waiver of Future Premiums on Parent Demise', 'Guaranteed Bonus & Compounding Additions'],
         eligibilityRules: { minAge: 21, maxAge: 50, minIncome: 25000 },
+      },
+      {
+        categoryId: catMap.get('life-insurance'),
+        name: 'Heritage Whole Life Assurance',
+        description: 'Lifelong protection until age 100 with escalating surrender cash value, loan access, and estate inheritance planning.',
+        minAge: 25,
+        maxAge: 65,
+        premium: 520, // ~$520 USD/yr (approx ₹43,000 INR/yr)
+        coverageAmount: 80000, // $80,000 USD (approx ₹66 Lakh cover)
+        termYears: 25,
+        features: ['Lifelong Whole Life Protection up to Age 100', 'Cash Value Surrender & Low-Interest Loan Facility', 'Generational Legacy Wealth Transfer'],
+        eligibilityRules: { minAge: 25, maxAge: 65, minIncome: 40000 },
       },
     ];
 
@@ -293,10 +293,10 @@ export async function seedDatabase() {
       productId: products[0]._id,  // PureShield Term 100
       agentId: agent._id,
       generatedPdfUrl: 'https://res.cloudinary.com/demo/image/upload/sample_quote_1.pdf',
-      premium: 550,
-      coverageAmount: 1000000,
+      premium: 180,
+      coverageAmount: 150000,
       status: 'paid',
-      notes: 'Customer preferred annual premium debit.',
+      notes: 'Customer opted for comprehensive term plan.',
     });
 
     const samplePayment1 = await Payment.create({
@@ -305,7 +305,7 @@ export async function seedDatabase() {
       agentId: agent._id,
       stripePaymentLink: 'https://buy.stripe.com/test_sample_link_1',
       stripeSessionId: 'cs_test_sample_session_1001',
-      amount: 550,
+      amount: 180,
       currency: 'USD',
       paymentStatus: 'completed',
       paidAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
@@ -328,8 +328,8 @@ export async function seedDatabase() {
       productId: products[7]._id,  // MotoRide Two-Wheeler Shield
       agentId: agent._id,
       generatedPdfUrl: 'https://res.cloudinary.com/demo/image/upload/sample_quote_2.pdf',
-      premium: 180,
-      coverageAmount: 10000,
+      premium: 35,
+      coverageAmount: 2000,
       status: 'shared',
       notes: 'Quotation link shared over WhatsApp.',
     });
@@ -338,18 +338,18 @@ export async function seedDatabase() {
       customerId: customers[1]._id,
       quoteId: sampleQuote2._id,
       stripePaymentLink: 'https://buy.stripe.com/test_sample_link_2',
-      amount: 180,
+      amount: 35,
       currency: 'USD',
       paymentStatus: 'pending',
     });
 
     const sampleQuote3 = await Quote.create({
-      customerId: customers[2]._id, // Liam O'Connor (48, car)
+      customerId: customers[2]._id, // Olivia Chen
       productId: products[3]._id,  // MediGuard Comprehensive Health
       agentId: agent._id,
       generatedPdfUrl: 'https://res.cloudinary.com/demo/image/upload/sample_quote_3.pdf',
-      premium: 720,
-      coverageAmount: 500000,
+      premium: 180,
+      coverageAmount: 30000,
       status: 'generated',
     });
 

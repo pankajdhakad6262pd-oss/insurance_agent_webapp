@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
     const msg =
       `Hello ${customer.firstName} ${customer.lastName},\n\n` +
       `Here is your official insurance quotation for *${product.name}*.\n\n` +
-      `Annual Premium: *$${product.premium.toLocaleString()} USD*\n` +
+      `Premium Amount: *$${product.premium.toLocaleString()} USD*\n` +
       `Sum Assured: *$${product.coverageAmount.toLocaleString()} USD*\n\n` +
       `You can view and download your full quotation breakdown PDF here:\n` +
       `${fullPdfUrl}\n\n` +

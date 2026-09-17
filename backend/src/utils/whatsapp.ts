@@ -21,7 +21,7 @@ export function generateWhatsAppQuoteLink(
   const message =
     `Hello ${customerName},\n\n` +
     `Here is your official insurance quotation for *${productName}*.\n\n` +
-    `Annual Premium: *$${premium.toLocaleString()} USD*\n\n` +
+    `Premium Amount: *$${premium.toLocaleString()} USD*\n\n` +
     `You can view and download your full quotation breakdown PDF here:\n` +
     `${pdfUrl}\n\n` +
     `Please review the details and let me know if you would like to proceed with policy activation.\n\n` +
