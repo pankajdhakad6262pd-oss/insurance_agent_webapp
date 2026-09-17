@@ -3,6 +3,10 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   devIndicators: false,
+  serverExternalPackages: ['pdfkit'],
+  outputFileTracingIncludes: {
+    '/api/**/*': ['./node_modules/pdfkit/**/*'],
+  },
   images: {
     domains: ['res.cloudinary.com', 'images.unsplash.com'],
   },

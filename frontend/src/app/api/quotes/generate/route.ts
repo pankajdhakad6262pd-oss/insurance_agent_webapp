@@ -5,6 +5,9 @@ import { verifyAuth } from '../../../../lib/server/auth';
 import { generatePdfBuffer } from '../../../../lib/server/pdf';
 import { getBaseUrl } from '../../../../lib/server/url';
 
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: NextRequest) {
   try {
     const user = verifyAuth(req);
